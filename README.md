@@ -326,7 +326,7 @@ $ aws s3 ls s3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2016/month
 WITH generate_smallint_series AS (select row_number() over () as n from workshop_das.green_201601_csv limit 65536)
 , part_years AS (select n AS year_num from generate_smallint_series where n between 2009 and 2016)
 , part_months AS (select n AS month_num from generate_smallint_series where n between 1 and 12)
-, taxi_companies AS (SELECT 'fhv' taxi_vendor UNION ALL SELECT 'green' UNION ALL SELECT 'yellow’)
+, taxi_companies AS (SELECT 'fhv' taxi_vendor UNION ALL SELECT 'green' UNION ALL SELECT 'yellow')
 
 SELECT 'ALTER TABLE adb305.NYTaxiRides ADD PARTITION(year=' || year_num || ', month=' || month_num || ', type=\'' || taxi_vendor || '\') ' ||
 'LOCATION \'s3://us-west-2.serverless-analytics/canonical/NY-Pub/year=' || year_num || '/month=' || month_num || '/type=' || taxi_vendor || '/\';'

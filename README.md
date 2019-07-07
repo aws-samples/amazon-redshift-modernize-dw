@@ -23,8 +23,8 @@ This sample code is made available under a modified MIT license. See the LICENSE
 
 ## Why this session
 * Data typically grows at 10x every 5 years.
-* Average lifetime for an Analytics Platform is 15yrs. 
-* Not just price and performance but also complexity. 
+* Average lifetime for an Analytics Platform is 15yrs.
+* Not just price and performance but also complexity.
 
 ## Benefits of this session
 
@@ -33,14 +33,14 @@ This sample code is made available under a modified MIT license. See the LICENSE
 	* Query historical data residing on S3.
 	* Plan for the future.
 
-## Account Login and Redshift Cluster Spin-up 
+## Account Login and Redshift Cluster Spin-up
 * You have the option to use workshops credits with your account or get a temporary account (slip of paper).
 * Log into AWS using the provided placeholder credentials, then switch the **us-west-2**.
 * We are here to help, please don’t hesitate to ask for assistance!
-* Create an IAM role to query S3 data, giving the role read-only access to all Amazon S3 buckets. Make sure to choose **AmazonS3ReadOnlyAccess** and **AWSGlueConsoleFullAccess**
+* Create a Redshift - Customizable accessible IAM role to query S3 data, giving the role read-only access to all Amazon S3 buckets. Make sure to choose **AmazonS3ReadOnlyAccess** and **AWSGlueConsoleFullAccess**
 
 ````
-https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum-create-role.html 
+https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum-create-role.html
 ````
 
 * Use Redshift’s ‘Quick Create’ functionality (or “Classic”) to create a cluster and associate the IAM role with it.
@@ -51,7 +51,9 @@ https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum-
 
 <details><summary>How-to Screenshot</summary>
 <p>
-![GitHub Logo](/images/redshift_launch.png) 
+
+![GitHub Logo](/images/redshift_launch.png)
+
 </p>
 </details>
 
@@ -69,7 +71,7 @@ https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum-
 	* Executes queries in parallel
 	* Load, unload, backup, restore
 * Amazon Redshift Spectrum nodes
-	* Execute queries directly against 
+	* Execute queries directly against
 	* Amazon Simple Storage Service (Amazon S3)
 
 ### Two Complimentary Usage Patterns
@@ -90,8 +92,8 @@ Amazon Redshift combines two usage patterns under a single, seamless service:
 
 ### Connecting to the Cluster
 
-* Existing tools like SQL Workbench can be used. 
-* Amazon Redshift has a built-in Query Editor via the AWS Management console. 
+* Existing tools like SQL Workbench can be used.
+* Amazon Redshift has a built-in Query Editor via the AWS Management console.
 
 	![GitHub Logo](/images/query_editor.png)
 
@@ -105,30 +107,30 @@ Amazon Redshift combines two usage patterns under a single, seamless service:
 	````
 	https://github.com/sosedoff/pgweb/releases
 	````
-	
+
 	* PgWeb defaults to port 5432, whereas Redshift defaults to 5439. If you want to change the port in PGWeb to 5439, invoke with:
-	
+
 	```
 	pgweb --url postgres://{username}:{password}@{cluster_endpoint}:5439/{database_name}?sslmode=require
 	```
-	
+
 * (optional) Command Line Interface (CLI) for Amazon Redshift.
-	
+
 	````
 	https://docs.aws.amazon.com/redshift/latest/mgmt/setting-up-rs-cli.html
 	````
 ## Workshop - Scenario #1: What happened in 2016?
 
 * Assemble your toolset:
-	* Choosing a SQL editor (SQL Workbench, PGWeb, psql, query from Console, etc.) 
+	* Choosing a SQL editor (SQL Workbench, PGWeb, psql, use query editor from Console, etc.)
 
 * Load the Green company data for January 2016 into Redshift direct-attached storage (DAS) with COPY.
 * Collect supporting/refuting evidence for the impact of the January, 2016 blizzard on taxi usage.
-* The CSV data is by month on Amazon S3. Here's a quick screenshot via the CLI: 
+* The CSV data is by month on Amazon S3. Here's a quick screenshot via the CLI:
 	````
 	$ aws s3 ls s3://us-west-2.serverless-analytics/NYC-Pub/green/ | grep 2016
 	````
-	
+
 	![GitHub Logo](/images/s3_ls.png)
 
 * Here's Sample data from the January File:
@@ -139,18 +141,18 @@ VendorID,lpep_pickup_datetime,Lpep_dropoff_datetime,Store_and_fwd_flag,RateCodeI
 	````
 
 	![GitHub Logo](/images/jan_file_head.png)
-	
-	
-### Build you DDL 
+
+
+### Build you DDL
 - Create a schema `workshop_das` and table `workshop_das.green_201601_csv` for tables that will reside on the Redshift compute nodes, AKA the Redshift direct-attached storage (DAS) tables.
 
 	<details><summary>Hint</summary>
 	<p>
-	
+
 	````
 	CREATE SCHEMA workshop_das;
 
-	CREATE TABLE workshop_das.green_201601_csv 
+	CREATE TABLE workshop_das.green_201601_csv
 	(
 	  vendorid                VARCHAR(4),
 	  pickup_datetime         TIMESTAMP,
@@ -180,7 +182,7 @@ VendorID,lpep_pickup_datetime,Lpep_dropoff_datetime,Store_and_fwd_flag,RateCodeI
 	</p>
 	</details>
 
-### Build your Copy Command 
+### Build your Copy Command
 
 Build your copy command to copy the data from Amazon S3. This dataset has the number of taxi rides in the month of January 2016.
 
@@ -204,7 +206,7 @@ IGNOREBLANKLINES
 **HINT HINT: The `XXXXXXXXXXXX` in the above command should be your AWS account number and Role information.**
 
 </p>
-</details>	
+</details>
 
 ### Pin-point the Blizzard and Quickly Graph the Data
 
@@ -227,6 +229,8 @@ ORDER BY 1;
 <p>
 <ul>
 <li>Navigate to Amazon Quicksight</li>
+<li>Please make sure to update Redshift cluster security group to include QuickSight CIDR range for us-west-2</li>
+    https://docs.aws.amazon.com/quicksight/latest/user/regions.html
 <li>Create a Data Source</li>
 <li>Choose a Table Schema</li>
 <li>Choose Table(s)</li>
@@ -277,14 +281,14 @@ $ aws s3 ls s3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2016/month
 
 	<details><summary>Hint</summary>
 	<p>
-	
+
 	```python
 	CREATE external SCHEMA adb305
-	FROM data catalog DATABASE 'spectrumdb' 
-	IAM_ROLE 'arn:aws:iam::XXXXXXXXXXXX:role/mySpectrumRole' 
+	FROM data catalog DATABASE 'spectrumdb'
+	IAM_ROLE 'arn:aws:iam::XXXXXXXXXXXX:role/mySpectrumRole'
 	CREATE external DATABASE if not exists;
 	```
-	
+
 	</p>
 	</details>
 
@@ -295,8 +299,8 @@ $ aws s3 ls s3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2016/month
 	stored in parquet format under location `s3://us-west-2.serverless-analytics/canonical/NY-Pub/`
 	<details><summary>Hint</summary>
 	<p>
-	
-	
+
+
 	```python
 	CREATE EXTERNAL TABLE adb305.NYTaxiRides (
     vendorid VARCHAR(6),
@@ -317,7 +321,7 @@ $ aws s3 ls s3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2016/month
 	```
 	</p>
 	</details>
-	
+
 ### Add the Partitions
 
 **Note for the Redshift Editor users:** Due to current limitations, the embedded seimicolon will cause an error. Similarly, this version of the editor only allows a single statement to be executed at a time. So, try two of the vendors (including Green) and the months in 2016 to save the time of running statement-by-statement. Users of the other editors should be able to run the partition creations script-as and add the partitions in a single command.
@@ -339,6 +343,7 @@ FROM part_years, part_months, taxi_companies order by 1;
 1. Determine the number of rows in the table.
 2. Save a copy of the explain plan for #1 above.
 3. Set the (approximate or specific) number of rows using the TABLE PROPERTIES under ALTER EXTERNAL TABLE.
+   Syntax - alter table adb305.NYTaxiRides set table properties ('numRows'='<yourNumberOfRows>');
 4. Rerun the explain plan for #1, noting the difference. When might this be impactful?
 
 ### Add a Redshift Spectrum Query Monitoring Rule to ensure reasonable use
@@ -362,11 +367,11 @@ https://docs.aws.amazon.com/redshift/latest/mgmt/workload-mgmt-config.html
 
 ### [Advanced Topic] Debug a Parquet/Redshift Spectrum datatype mismatch
 
-1. Create a new Redshift Spectrum table, changing the datatype of column ‘trip_distance’ from FLOAT8 to FLOAT4. 
+1. Create a new Redshift Spectrum table, changing the datatype of column ‘trip_distance’ from FLOAT8 to FLOAT4.
 	* Add a single partition for testing.
 2. Counts still work, but what about other operations (SELECT MIN(trip_distance) FROM, SELECT * FROM, CTAS)?
 3. Instead of considering Apache Drill or other tool to help resolve the issue, consider Redshift system view SVL_S3LOG  
- 
+
 <details><summary>Hint</summary>
 <p>
 
@@ -381,7 +386,7 @@ https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-troubleshooting.html#s
 
 ## Workshop - Scenario #3: Create a Single Version of Truth
 
-### Create a view 
+### Create a view
 
 Create a view that covers both the January, 2016 Green company DAS table with the historical data residing on S3 to make a single table exclusively for the Green data scientists. Use CTAS to create a table with data from January, 2016 for the Green company. Compare the runtime to populate this with the COPY runtime earlier.
 
@@ -404,7 +409,7 @@ Note: What about column compression/encoding? Remember that on a CTAS, Amazon Re
 * All other columns are assigned LZO compression.
 
 ```
-https://docs.aws.amazon.com/redshift/latest/dg/r_CTAS_usage_notes.html 
+https://docs.aws.amazon.com/redshift/latest/dg/r_CTAS_usage_notes.html
 
 ```
 Here's the ANALYZE COMPRESSION output in case you want to use it:
@@ -412,7 +417,7 @@ Here's the ANALYZE COMPRESSION output in case you want to use it:
 ![GitHub Logo](/images/analyze_compression.png)
 
 
-### Complete populating the table 
+### Complete populating the table
 
 Add to the January, 2016 table with an INSERT/SELECT statement for the other taxi companies.
 
@@ -427,16 +432,16 @@ INSERT INTO workshop_das.taxi_201601 (SELECT * FROM adb305.NYTaxiRides WHERE yea
 </p>
 </details>
 
-### Create a new Spectrum table 
+### Create a new Spectrum table
 Create a new Spectrum table **adb305.NYTaxiRides** (or simply drop the January, 2016 partitions).
 
 <details><summary>Hint</summary>
 <p>
 
 ```python
-ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=1, type='fhv'); 
-ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=1, type='green'); 
-ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=1, type='yellow'); 
+ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=1, type='fhv');
+ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=1, type='green');
+ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=1, type='yellow');
 
 ```
 </p>
@@ -452,7 +457,7 @@ Create a view **adb305_view_NYTaxiRides** from **workshop_das.taxi_201601** that
 ```python
 CREATE VIEW adb305_view_NYTaxiRides AS
 SELECT * FROM workshop_das.taxi_201601
-UNION ALL 
+UNION ALL
 SELECT * FROM adb305.NYTaxiRides
 WITH NO SCHEMA BINDING
 ;
@@ -473,7 +478,7 @@ EXPLAIN SELECT year, month, type, COUNT(*) FROM adb305_view_NYTaxiRides WHERE ye
 </code></pre>
 
 <pre><code>
-QUERY PLAN 
+QUERY PLAN
 XN Merge  (cost=1000090025653.20..1000090025653.21 rows=2 width=48)
   Merge Key: derived_col1, derived_col2, derived_col3
   ->  XN Network  (cost=1000090025653.20..1000090025653.21 rows=2 width=48)
@@ -595,37 +600,36 @@ XN Merge  (cost=1000075000042.52..1000075000042.52 rows=1 width=30)
 	<pre><code>
 	CREATE OR REPLACE VIEW adb305_view_NYTaxiRides AS
    SELECT * FROM workshop_das.taxi_201504 <b>Note how these are business quarters</b>
-UNION ALL 
-  SELECT * FROM workshop_das.taxi_201601
-UNION ALL 
-  SELECT * FROM workshop_das.taxi_201602
-UNION ALL 
-  SELECT * FROM workshop_das.taxi_201603
-UNION ALL 
-  SELECT * FROM workshop_das.taxi_201604
-UNION ALL 
+   UNION ALL
+   SELECT * FROM workshop_das.taxi_201601
+   UNION ALL
+	 SELECT * FROM workshop_das.taxi_201602
+   UNION ALL
+   SELECT * FROM workshop_das.taxi_201603
+   UNION ALL
+   SELECT * FROM workshop_das.taxi_201604
+   UNION ALL
   SELECT * FROM adb305.NYTaxiRides
-WITH NO SCHEMA BINDING;
+  WITH NO SCHEMA BINDING;
 	</code></pre>
-	
+
 * Or something like this? Bulk DELETE-s in Redshift are actually quite fast (with one-time single-digit minute time to VACUUM), so this is also a valid configuration as well:
 
 	<pre><code>
 	CREATE OR REPLACE VIEW adb305_view_NYTaxiRides AS
    SELECT * FROM workshop_das.taxi_current
-UNION ALL 
+  UNION ALL
   SELECT * FROM adb305.NYTaxiRides
-WITH NO SCHEMA BINDING;
+  WITH NO SCHEMA BINDING;
 	</code></pre>
-	
-* Don’t forget a quick ANALYZE and VACUUM after completing either version.
+
 
 * If needed, the Redshift DAS tables can also be populated from the Parquet data with COPY. Note: This will highlight a data design when we created the Parquet data
 
 **COPY with Parquet doesn’t currently include a way to specify the partition columns as sources to populate the target Redshift DAS table. The current expectation is that since there’s no overhead (performance-wise) and little cost in also storing the partition data as actual columns on S3, customers will store the partition column data as well.**
 
 * We’re going to show how to work with the scenario where this pattern wasn’t followed. Use the single table option for this example
-	
+
 	````
 	CREATE TABLE workshop_das.taxi_current DISTSTYLE EVEN SORTKEY(year, month, type) AS SELECT * FROM adb305.NYTaxiRides WHERE 1 = 0;
 
@@ -644,7 +648,7 @@ WITH NO SCHEMA BINDING;
 	- Start Green loop.
 	- Q4 2015.
 
-	<pre><code>	
+	<pre><code>
 	COPY workshop_das.taxi_loader FROM 's3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2015/month=10/type=green' IAM_ROLE 'arn:aws:iam::XXXXXXXXXXXX:role/mySpectrumRole' FORMAT AS PARQUET;
 COPY workshop_das.taxi_loader FROM 's3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2015/month=11/type=green' IAM_ROLE 'arn:aws:iam::XXXXXXXXXXXX:role/mySpectrumRole' FORMAT AS PARQUET;
 COPY workshop_das.taxi_loader FROM 's3://us-west-2.serverless-analytics/canonical/NY-Pub/year=2015/month=12/type=green' IAM_ROLE 'arn:aws:iam::XXXXXXXXXXXX:role/mySpectrumRole' FORMAT AS PARQUET;
@@ -665,7 +669,7 @@ COPY workshop_das.taxi_loader FROM 's3://us-west-2.serverless-analytics/canonica
 
 	<pre><code>
 	INSERT INTO workshop_das.taxi_current SELECT *, DATE_PART(year,pickup_datetime), DATE_PART(month,pickup_datetime), 'green' FROM workshop_das.taxi_loader;
-	
+
 	TRUNCATE workshop_das.taxi_loader;
 	</code></pre>
 
@@ -752,4 +756,5 @@ ALTER TABLE adb305.NYTaxiRides DROP PARTITION(year=2016, month=12, type='green')
 	* Either DELETE or DROP TABLE (depending on the implementation).
 
 **You have already done all of the steps in previous scenarios for this workshop. You have the toolset in your mind to do this!
+On the completion of the workshop please make sure to delete your cluster
 **

@@ -1,4 +1,4 @@
-# ADB301 - Modernize your data warehouse with Amazon Redshift
+# Modernize your data warehouse with Amazon Redshift
 
 Can you set up a data warehouse and create a dashboard in under 60 minutes? In this workshop, we show you how with Amazon Redshift, a fully managed cloud data warehouse that provides first-rate performance at the lowest cost for queries across your data warehouse and data lake. Learn the steps and best practices for deploying your data warehouse in your organization. Also, learn how to query petabytes of data in your data warehouse and exabytes of data, without loading or moving, in your Amazon S3 data lake. Finally, learn how to easily migrate from traditional or on-premises data warehouses. Please be sure to bring your laptop.
 
@@ -37,7 +37,7 @@ This sample code is made available under a modified MIT license. See the LICENSE
 * You have the option to use workshops credits with your account or get a temporary account (slip of paper).
 * Log into AWS using the provided placeholder credentials, then switch the **us-west-2**.
 * We are here to help, please don’t hesitate to ask for assistance!
-* Create a Redshift - Customizable accessible IAM role to query S3 data, giving the role read-only access to all Amazon S3 buckets. Make sure to choose **AmazonS3ReadOnlyAccess** and **AWSGlueConsoleFullAccess**
+* Create a Redshift - Customizable accessible IAM role to query S3 data, giving the role read-only access to all Amazon S3 buckets. Make sure to choose **AmazonS3ReadOnlyAccess** and **AWSGlueConsoleFullAccess** Use the steps in the link below to create the IAM role:
 
 ````
 https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum-create-role.html
@@ -92,7 +92,8 @@ Amazon Redshift combines two usage patterns under a single, seamless service:
 
 ### Connecting to the Cluster
 
-* Existing tools like SQL Workbench can be used.
+* Existing tools like SQL Workbench can be used. Note: Before you connect to Redshift from SQL Workbench or other client tools, ensure the security groups are configured for the Redshift cluster. See the instructions at 
+https://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-authorize-cluster-access.html#rs-gsg-how-to-authorize-access-vpc-security-group
 * Amazon Redshift has a built-in Query Editor via the AWS Management console.
 
 	![GitHub Logo](/images/query_editor.png)
